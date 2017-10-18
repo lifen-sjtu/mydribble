@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">myDribble</string>
+    <string name="drawer_menu_home">Home</string>
+    <string name="drawer_menu_like">Like</string>
+    <string name="drawer_menu_buckets" >Buckets</string>
+    <string name="shot_image">Shot Image</string>
+
+    <string name="open_drawer">open drawer</string>
+    <string name="close_drawer">close drawer</string>
+    <string name="shot_count">{0,choice,0#0 shot|1#1 shot|1&lt;{0} shots}</string>
+    <string name="like">Like</string>
+    <string name="shot_author_picture">Shot Author Picture</string>
+</resources>
