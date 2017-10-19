@@ -26,8 +26,10 @@ import java.util.Random;
 
 public class ShotListFragment extends Fragment {
     public static final String KEY_SHOT_TITLE = "shot_title";
+    private static final int COUNT_PER_PAGE = 20;
 
     private RecyclerView recyclerView;
+    private ShotListAdapter adapter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,13 +43,37 @@ public class ShotListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new SpaceItemDecoration(
                 getResources().getDimensionPixelSize(R.dimen.spacing_medium)));
-        recyclerView.setAdapter(new ShotListAdapter(fakeData()));
+        adapter = new ShotListAdapter(fakeData(0), new ShotListAdapter.LoadMoreListner() {
+            @Override
+            public void onLoadMore() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(2000);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    List<Shot> moreData = fakeData(adapter.getDataCount()/COUNT_PER_PAGE);
+                                    adapter.append(moreData);
+                                    adapter.setShowLoading(moreData.size() >= COUNT_PER_PAGE);
+                                }
+                            });
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        });
+        recyclerView.setAdapter(adapter);
     }
 
-    private List<Shot> fakeData() {
+    private List<Shot> fakeData(int page) {
         List<Shot> shotList = new ArrayList<>();
         Random random = new Random();
-        for (int i = 0; i < 20; ++i) {
+        int count = page < 2 ? COUNT_PER_PAGE : 10;
+        for (int i = 0; i < count; ++i) {
             Shot shot = new Shot();
             shot.title = "shot" + i;
             shot.html_url = eatFoodyImages[i];
@@ -100,11 +126,4 @@ public class ShotListFragment extends Fragment {
         return TextUtils.join(" ", words);
     }
 
-//    protected Fragment newFragment() {
-//        return ShotFragment.newInstance(getIntent().getExtras());
-//    }
-//
-//    protected String getActivityTitle() {
-//        return getIntent().getStringExtra(KEY_SHOT_TITLE);
-//    }
 }
