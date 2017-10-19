@@ -50,6 +50,7 @@ public class ShotListFragment extends Fragment {
         for (int i = 0; i < 20; ++i) {
             Shot shot = new Shot();
             shot.title = "shot" + i;
+            shot.html_url = eatFoodyImages[i];
             shot.views_count = random.nextInt(10000);
             shot.likes_count = random.nextInt(200);
             shot.buckets_count = random.nextInt(50);
@@ -70,6 +71,29 @@ public class ShotListFragment extends Fragment {
             "pear", "pen", "pencil", "phone", "physicist", "planet", "potato", "road", "salad",
             "shoe", "slipper", "soup", "spoon", "star", "steak", "table", "terminal", "treehouse",
             "truck", "watermelon", "window"
+    };
+
+    public static String[] eatFoodyImages = {
+            "http://i.imgur.com/rFLNqWI.jpg",
+            "http://i.imgur.com/C9pBVt7.jpg",
+            "http://i.imgur.com/rT5vXE1.jpg",
+            "http://i.imgur.com/aIy5R2k.jpg",
+            "http://i.imgur.com/MoJs9pT.jpg",
+            "http://i.imgur.com/S963yEM.jpg",
+            "http://i.imgur.com/rLR2cyc.jpg",
+            "http://i.imgur.com/SEPdUIx.jpg",
+            "http://i.imgur.com/aC9OjaM.jpg",
+            "http://i.imgur.com/76Jfv9b.jpg",
+            "http://i.imgur.com/fUX7EIB.jpg",
+            "http://i.imgur.com/syELajx.jpg",
+            "http://i.imgur.com/COzBnru.jpg",
+            "http://i.imgur.com/Z3QjilA.jpg",
+            "http://i.imgur.com/tGbaZCY.jpg",
+            "http://i.imgur.com/rFLNqWI.jpg",
+            "http://i.imgur.com/C9pBVt7.jpg",
+            "http://i.imgur.com/rT5vXE1.jpg",
+            "http://i.imgur.com/aIy5R2k.jpg",
+            "http://i.imgur.com/MoJs9pT.jpg"
     };
 
     private static String makeDescription() {

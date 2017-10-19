@@ -1,5 +1,6 @@
 package com.example.jlwang.mydribble.shot_item;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -10,6 +11,9 @@ import android.view.ViewGroup;
 
 import com.example.jlwang.mydribble.R;
 import com.example.jlwang.mydribble.model.Shot;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 
 /**
@@ -25,11 +29,14 @@ public class ShotAdapter extends RecyclerView.Adapter{
         this.shot = shot;
     }
 
+    private Context context;
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         switch (viewType){
             case VIEW_TYPE_SHOT_IMAGE:
+                context = parent.getContext();
                 view = LayoutInflater.from(parent.getContext())
                                      .inflate(R.layout.shot_item_image,parent,false);
                 return new ShotImageViewHolder(view);
@@ -42,11 +49,13 @@ public class ShotAdapter extends RecyclerView.Adapter{
 
     }
 
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         int viewType = getItemViewType(position);
         switch (viewType){
             case VIEW_TYPE_SHOT_IMAGE:
+                Picasso.with(context).load(shot.html_url).into(((ShotImageViewHolder) holder).shotImage);
                 break;
             case VIEW_TYPE_SHOT_INFO:
                 ShotInfoViewHolder shotInfoViewHolder = (ShotInfoViewHolder) holder;

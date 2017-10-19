@@ -14,6 +14,7 @@ import com.example.jlwang.mydribble.shot_item.ShotActivity;
 import com.example.jlwang.mydribble.shot_item.ShotFragment;
 import com.example.jlwang.mydribble.utils.ModelUtils;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -23,16 +24,19 @@ import java.util.List;
 
 public class ShotListAdapter extends RecyclerView.Adapter {
     private List<Shot> shotList;
-
+    private Context context;
     /**
      * This is the default constructor
      * @param shotList the list we pass in to construct the object
      */
+
+
     public ShotListAdapter(@NonNull List<Shot> shotList) {
         this.shotList = shotList;
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_shot,parent,false);
         return new ShotViewHolder(view);
     }
@@ -46,6 +50,7 @@ public class ShotListAdapter extends RecyclerView.Adapter {
         shotviewHolder.viewCount.setText(String.valueOf(shot.views_count));
         shotviewHolder.image.setImageResource(R.drawable.shot_placeholder);
 
+        Picasso.with(context).load(shot.html_url).fit().into(shotviewHolder.image);
         shotviewHolder.shot_cover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +65,6 @@ public class ShotListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-
         return shotList.size();
     }
 
