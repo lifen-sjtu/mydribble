@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.example.jlwang.mydribble.R;
 import com.example.jlwang.mydribble.model.Shot;
 import com.example.jlwang.mydribble.shot_item.ShotActivity;
@@ -67,10 +68,9 @@ public class ShotListAdapter extends RecyclerView.Adapter {
             shotviewHolder.viewCount.setText(String.valueOf(shot.views_count));
             shotviewHolder.image.setImageResource(R.drawable.shot_placeholder);
 
-            Picasso.with(holder.itemView.getContext())
+            Glide.with(holder.itemView.getContext())
                     .load(shot.html_url)
                     .placeholder(R.drawable.shot_placeholder)
-                    .fit()
                     .into(shotviewHolder.image);
             shotviewHolder.shot_cover.setOnClickListener(new View.OnClickListener() {
                 @Override

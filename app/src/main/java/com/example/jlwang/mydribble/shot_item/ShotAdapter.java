@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.example.jlwang.mydribble.R;
 import com.example.jlwang.mydribble.model.Shot;
 import com.squareup.picasso.Picasso;
@@ -53,9 +54,8 @@ public class ShotAdapter extends RecyclerView.Adapter{
         int viewType = getItemViewType(position);
         switch (viewType){
             case VIEW_TYPE_SHOT_IMAGE:
-                Picasso.with(holder.itemView.getContext())
+                Glide.with(holder.itemView.getContext())
                         .load(shot.html_url)
-                        .placeholder(R.drawable.shot_placeholder)
                         .into(((ShotImageViewHolder) holder).shotImage);
                 break;
             case VIEW_TYPE_SHOT_INFO:
