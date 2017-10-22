@@ -24,7 +24,6 @@ import java.util.List;
 
 public class ShotListAdapter extends RecyclerView.Adapter {
     private List<Shot> shotList;
-    private Context context;
     private static final int VIEWTYPE_SHOT = 0;
     private static final int VIEWTYPE_LOADING = 1;
 
@@ -43,7 +42,6 @@ public class ShotListAdapter extends RecyclerView.Adapter {
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        context = parent.getContext();
         View view;
         switch(viewType){
             case VIEWTYPE_SHOT:
@@ -69,7 +67,11 @@ public class ShotListAdapter extends RecyclerView.Adapter {
             shotviewHolder.viewCount.setText(String.valueOf(shot.views_count));
             shotviewHolder.image.setImageResource(R.drawable.shot_placeholder);
 
-            Picasso.with(context).load(shot.html_url).fit().into(shotviewHolder.image);
+            Picasso.with(holder.itemView.getContext())
+                    .load(shot.html_url)
+                    .placeholder(R.drawable.shot_placeholder)
+                    .fit()
+                    .into(shotviewHolder.image);
             shotviewHolder.shot_cover.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -101,6 +103,7 @@ public class ShotListAdapter extends RecyclerView.Adapter {
     public int getDataCount() {
         return shotList.size();
     }
+
     public void append(List<Shot> moreData) {
         shotList.addAll(moreData);
         notifyDataSetChanged();
@@ -110,6 +113,7 @@ public class ShotListAdapter extends RecyclerView.Adapter {
         this.showLoading = showLoading;
         notifyDataSetChanged();
     }
+
     public interface LoadMoreListner {
         void onLoadMore();
     }
