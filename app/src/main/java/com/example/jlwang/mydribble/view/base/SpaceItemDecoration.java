@@ -1,4 +1,4 @@
-package com.example.jlwang.mydribble.base;
+package com.example.jlwang.mydribble.view.base;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

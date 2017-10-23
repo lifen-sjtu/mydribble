@@ -1,13 +1,12 @@
-package com.example.jlwang.mydribble.shot_item;
+package com.example.jlwang.mydribble.view.shot_item;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jlwang.mydribble.R;
-import com.example.jlwang.mydribble.base.BaseViewHolder;
+import com.example.jlwang.mydribble.view.base.BaseViewHolder;
 
 import butterknife.BindView;
 

@@ -1,4 +1,4 @@
-package com.example.jlwang.mydribble.buck_list;
+package com.example.jlwang.mydribble.view.buck_list;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

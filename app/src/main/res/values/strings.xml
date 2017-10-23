@@ -10,4 +10,7 @@
     <string name="shot_count">{0,choice,0#0 shot|1#1 shot|1&lt;{0} shots}</string>
     <string name="like">Like</string>
     <string name="shot_author_picture">Shot Author Picture</string>
+    <string name="login">log into dribbble</string>
+
+    <string name="auth_activity_title">Log into Dribbble</string>
 </resources>

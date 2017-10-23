@@ -1,20 +1,17 @@
-package com.example.jlwang.mydribble.shot_item;
+package com.example.jlwang.mydribble.view.shot_item;
 
 import android.support.v4.app.Fragment;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.jlwang.mydribble.R;
 import com.example.jlwang.mydribble.model.Shot;
-import com.example.jlwang.mydribble.model.User;
 import com.example.jlwang.mydribble.utils.ModelUtils;
 import com.google.gson.reflect.TypeToken;
 

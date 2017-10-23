@@ -1,4 +1,4 @@
-package com.example.jlwang.mydribble.buck_list;
+package com.example.jlwang.mydribble.view.buck_list;
 
 
 import android.support.v4.app.Fragment;
@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.jlwang.mydribble.R;
-import com.example.jlwang.mydribble.base.SpaceItemDecoration;
+import com.example.jlwang.mydribble.view.base.SpaceItemDecoration;
 import com.example.jlwang.mydribble.model.Bucket;
 
 import java.util.ArrayList;

@@ -1,11 +1,11 @@
-package com.example.jlwang.mydribble.buck_list;
+package com.example.jlwang.mydribble.view.buck_list;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jlwang.mydribble.R;
-import com.example.jlwang.mydribble.base.BaseViewHolder;
+import com.example.jlwang.mydribble.view.base.BaseViewHolder;
 
 import butterknife.BindView;
 

@@ -8,7 +8,7 @@
     android:background="@color/colorPrimary">
 
     <ImageView
-        android:id="@+id/user_pic"
+        android:id="@+id/nav_user_pic"
         android:layout_width="@dimen/shot_author_picture_size"
         android:layout_height="@dimen/shot_author_picture_size"
         android:layout_marginRight="@dimen/spacing_medium"
@@ -18,22 +18,22 @@
         android:contentDescription="@string/shot_author_picture"/>
 
     <TextView
-        android:id="@+id/login_status"
+        android:id="@+id/nav_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/user_pic"
+        android:layout_toRightOf="@+id/nav_user_pic"
         android:layout_marginTop="@dimen/spacing_small"
         android:textAllCaps="true"
         style="@style/AppTheme.TextView.Clickable.2.White"
         android:text="log out" />
 
     <TextView
-        android:id="@+id/user_name"
+        android:id="@+id/nav_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/user_pic"
-        android:layout_above="@+id/login_status"
+        android:layout_toRightOf="@+id/nav_user_pic"
+        android:layout_above="@+id/nav_logout"
         android:text="@string/app_name"
         style="@style/AppTheme.TextView.Clickable.2.White"/>
 

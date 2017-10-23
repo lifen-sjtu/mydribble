@@ -1,10 +1,7 @@
-package com.example.jlwang.mydribble.shot_item;
+package com.example.jlwang.mydribble.view.shot_item;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +9,6 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.example.jlwang.mydribble.R;
 import com.example.jlwang.mydribble.model.Shot;
-import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 
 /**
@@ -55,7 +49,7 @@ public class ShotAdapter extends RecyclerView.Adapter{
         switch (viewType){
             case VIEW_TYPE_SHOT_IMAGE:
                 Glide.with(holder.itemView.getContext())
-                        .load(shot.html_url)
+                        .load(shot.getImageUrl())
                         .into(((ShotImageViewHolder) holder).shotImage);
                 break;
             case VIEW_TYPE_SHOT_INFO:

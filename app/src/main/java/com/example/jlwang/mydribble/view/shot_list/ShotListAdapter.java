@@ -1,4 +1,4 @@
-package com.example.jlwang.mydribble.shot_list;
+package com.example.jlwang.mydribble.view.shot_list;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,11 +11,10 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.example.jlwang.mydribble.R;
 import com.example.jlwang.mydribble.model.Shot;
-import com.example.jlwang.mydribble.shot_item.ShotActivity;
-import com.example.jlwang.mydribble.shot_item.ShotFragment;
+import com.example.jlwang.mydribble.view.ShotActivity;
+import com.example.jlwang.mydribble.view.shot_item.ShotFragment;
 import com.example.jlwang.mydribble.utils.ModelUtils;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class ShotListAdapter extends RecyclerView.Adapter {
             shotviewHolder.image.setImageResource(R.drawable.shot_placeholder);
 
             Glide.with(holder.itemView.getContext())
-                    .load(shot.html_url)
+                    .load(shot.getImageUrl())
                     .placeholder(R.drawable.shot_placeholder)
                     .into(shotviewHolder.image);
             shotviewHolder.shot_cover.setOnClickListener(new View.OnClickListener() {

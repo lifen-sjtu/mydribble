@@ -1,4 +1,4 @@
-package com.example.jlwang.mydribble.shot_item;
+package com.example.jlwang.mydribble.view;
 
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -6,11 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.jlwang.mydribble.R;
+import com.example.jlwang.mydribble.view.shot_item.ShotFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
