@@ -75,7 +75,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/shot_share_count"
+            android:id="@+id/shot_share_action"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -84,7 +84,7 @@
             android:paddingBottom="@dimen/shot_action_drawable_top_icon_padding"
             android:drawableTop="@drawable/ic_share_black_18dp"
             android:drawablePadding="@dimen/shot_action_drawable_top_icon_padding"
-            tools:text="1000" />
+            android:text="Share" />
 
     </LinearLayout>
 

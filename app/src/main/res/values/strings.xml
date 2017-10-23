@@ -13,4 +13,5 @@
     <string name="login">log into dribbble</string>
 
     <string name="auth_activity_title">Log into Dribbble</string>
+    <string name="share_shot">Share this amazing shot!</string>
 </resources>

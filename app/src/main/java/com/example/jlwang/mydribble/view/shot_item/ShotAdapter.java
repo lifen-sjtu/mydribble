@@ -1,5 +1,7 @@
 package com.example.jlwang.mydribble.view.shot_item;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -61,6 +63,12 @@ public class ShotAdapter extends RecyclerView.Adapter{
                 shotInfoViewHolder.shotBucketCount.setText(String.valueOf(shot.buckets_count));
                 shotInfoViewHolder.shotLikeCount.setText(String.valueOf(shot.likes_count));
                 shotInfoViewHolder.shotViewCount.setText(String.valueOf(shot.views_count));
+                shotInfoViewHolder.shotShareBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        share(v.getContext());
+                    }
+                });
                 break;
             default:break;
         }
@@ -78,5 +86,13 @@ public class ShotAdapter extends RecyclerView.Adapter{
         }else{
             return VIEW_TYPE_SHOT_INFO;
         }
+    }
+
+    private void share(Context context) {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shot.title + " " + shot.html_url);
+        shareIntent.setType("text/plain");
+        context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_shot)));
     }
 }

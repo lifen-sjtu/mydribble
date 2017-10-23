@@ -95,6 +95,7 @@ public class ShotListFragment extends Fragment {
         protected void onPostExecute(List<Shot> shots) {
             if(shots != null) {
                 adapter.append(shots);
+                adapter.setShowLoading(shots.size() == COUNT_PER_PAGE);
             }
 
         }

@@ -24,6 +24,7 @@ class ShotInfoViewHolder extends BaseViewHolder {
     @BindView(R.id.shot_bucket_btn) ImageButton shotBucketBtn;
     @BindView(R.id.shot_bucket_count) TextView shotBucketCount;
     @BindView(R.id.shot_description) TextView shotDiscription;
+    @BindView(R.id.shot_share_action) TextView shotShareBtn;
     public ShotInfoViewHolder(View view) {
         super(view);
     }
