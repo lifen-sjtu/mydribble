@@ -1,12 +1,9 @@
 package com.example.jlwang.mydribble.dribbble.auth;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -24,9 +20,6 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.example.jlwang.mydribble.R;
-import com.example.jlwang.mydribble.view.LogInActivity;
-
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +30,6 @@ import butterknife.ButterKnife;
  */
 
 public class AuthActivity extends AppCompatActivity {
-    public final static String RED_URL="google.com";
     public final static String KEY_AUTH_CODE = "Authorize code";
 
     @BindView(R.id.webview) WebView webView;
@@ -54,19 +46,18 @@ public class AuthActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.auth_activity_title));
 
-        webView.getSettings().setJavaScriptEnabled(true);
-        //webView.loadUrl("https://dribbble.com/oauth/authorize?client_id=a20d39c0c7d70febd60ac1c560f4ff1a7e6b4b9bdf3b7a8a8844db2aad204be6");
-        webView.loadUrl(Auth.AUTHORIZE_URL + "?" + Auth.KEY_CLIENT_ID + "=" + Auth.CLIENT_ID_VALUE);
-
         webView.setWebViewClient(new WebViewClient() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 Uri uri = request.getUrl();
-                if(uri.getHost().toString().equals(RED_URL)) {
+                Log.i("fen uri",uri.toString());
+
+                if(uri.toString().startsWith(Auth.REDIRECT_URI)) {
                     Intent intent = new Intent();
-                    intent.putExtra(KEY_AUTH_CODE,uri.getQueryParameter("code"));
+                    Log.i("fen",uri.getQueryParameter(Auth.KEY_CODE));
+                    intent.putExtra(KEY_AUTH_CODE,uri.getQueryParameter(Auth.KEY_CODE));
                     setResult(Activity.RESULT_OK,intent);
                     finish();
                 }
@@ -92,6 +83,9 @@ public class AuthActivity extends AppCompatActivity {
                 progressBar.setProgress(newProgress);
             }
         });
+
+        String url = getIntent().getStringExtra(Auth.KEY_URL);
+        webView.loadUrl(url);
     }
 
     @Override

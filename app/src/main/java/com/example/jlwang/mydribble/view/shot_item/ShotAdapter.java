@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.example.jlwang.mydribble.R;
 import com.example.jlwang.mydribble.model.Shot;
+import com.example.jlwang.mydribble.view.ChooseBucketActivity;
 
 
 /**
@@ -46,7 +47,7 @@ public class ShotAdapter extends RecyclerView.Adapter{
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         int viewType = getItemViewType(position);
         switch (viewType){
             case VIEW_TYPE_SHOT_IMAGE:
@@ -67,6 +68,15 @@ public class ShotAdapter extends RecyclerView.Adapter{
                     @Override
                     public void onClick(View v) {
                         share(v.getContext());
+                    }
+                });
+
+                shotInfoViewHolder.shotBucketBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Context context = holder.itemView.getContext();
+                        Intent intent = new Intent(context, ChooseBucketActivity.class);
+                        context.startActivity(intent);
                     }
                 });
                 break;

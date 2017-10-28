@@ -1,31 +1,59 @@
 package com.example.jlwang.mydribble.view.buck_list;
 
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.jlwang.mydribble.R;
+import com.example.jlwang.mydribble.dribbble.Dribbble;
 import com.example.jlwang.mydribble.view.base.SpaceItemDecoration;
 import com.example.jlwang.mydribble.model.Bucket;
+import com.example.jlwang.mydribble.view.shot_list.ShotListFragment;
+import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Downloader;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
 
 /**
  * Created by jlwang on 10/17/17.
  */
 
 public class BucketListFragment extends Fragment{
+    private static final int COUNT_PER_PAGE = 12;
+    public static final int REQ_CODE_NEW_BUCKET = 101;
     private RecyclerView recyclerView;
+    private BucketListAdapter adapter;
+    private OkHttpClient client = new OkHttpClient();
+    private static boolean isChoosing;
+
+    public static BucketListFragment newInstance(boolean chooseMode) {
+        isChoosing = chooseMode;
+        return new BucketListFragment();
+    }
 
     @Nullable
     @Override
@@ -40,28 +68,95 @@ public class BucketListFragment extends Fragment{
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.addItemDecoration(new SpaceItemDecoration(
                 getResources().getDimensionPixelSize(R.dimen.spacing_medium)));
-        recyclerView.setAdapter(new BucketListAdapter(mockData()));
+        adapter = new BucketListAdapter(new ArrayList<Bucket>(), new BucketListAdapter.LoadMoreListner() {
+            @Override
+            public void onLoadMore() {
+                AsyncTaskCompat.executeParallel(new LoadBucketList(Dribbble.USER_END_POINT,adapter.getDataCount() / COUNT_PER_PAGE + 1));
+            }
+        }, isChoosing);
+        recyclerView.setAdapter(adapter);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Try replacing the root layout of R.layout.fragment_fab_recycler_view with
-                // FragmentLayout to see what Snackbar looks like
-                Snackbar.make(v, "Fab clicked", Snackbar.LENGTH_LONG).show();
+                BucketDialogFragment dialog = BucketDialogFragment.newInstance();
+                dialog.setTargetFragment(BucketListFragment.this, REQ_CODE_NEW_BUCKET);
+                dialog.show(getFragmentManager(),BucketDialogFragment.TAG);
+
+                //Snackbar.make(v, "Fab clicked", Snackbar.LENGTH_LONG).show();
             }
         });
     }
 
-    private List<Bucket> mockData() {
-        List<Bucket> list = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 20; i++) {
-            Bucket bucket = new Bucket();
-            bucket.name = "Bucket" + i;
-            bucket.shots_count = random.nextInt(10);
-            list.add(bucket);
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQ_CODE_NEW_BUCKET && resultCode == Activity.RESULT_OK) {
+            String bucketName = data.getStringExtra(BucketDialogFragment.KEY_BUCKET_NAME);
+            String bucketDescription = data.getStringExtra(BucketDialogFragment.KEY_BUCKET_DESCRIPTION);
+            if (!TextUtils.isEmpty(bucketName)) {
+                AsyncTaskCompat.executeParallel(new NewBucketTask(bucketName, bucketDescription));
+            }
         }
-        return list;
+    }
+
+    private class LoadBucketList extends AsyncTask<Void,Void,List<Bucket>> {
+        String bucketUrl;
+
+        LoadBucketList(String bucketUrl, int page) {
+            this.bucketUrl = bucketUrl + "/"+ "buckets?page=" + page;
+        }
+
+        @Override
+        protected List<Bucket> doInBackground(Void... params) {
+            try {
+                Response response = Dribbble.makeGetRequest(bucketUrl);
+                return Dribbble.parseResponse(response,new TypeToken<List<Bucket>>(){});
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Bucket> buckets) {
+            if(buckets != null) {
+                adapter.append(buckets);
+                adapter.setShowLoading(buckets.size() == COUNT_PER_PAGE);
+            }
+        }
+    }
+
+    private class NewBucketTask extends AsyncTask<Void,Void,Bucket>{
+        private String name;
+        private String description;
+
+        public NewBucketTask(String bucketName, String bucketDescription) {
+            this.name = bucketName;
+            this.description = bucketDescription;
+        }
+
+        @Override
+        protected Bucket doInBackground(Void... params) {
+            FormBody formBody = new FormBody.Builder()
+                    .add(Dribbble.KEY_NAME, name)
+                    .add(Dribbble.KEY_DESCRIPTION, description)
+                    .build();
+            try {
+                Log.i("fen response",Dribbble.makePostRequest(Dribbble.BUCKETS_END_POINT, formBody).toString());
+                return Dribbble.parseResponse(Dribbble.makePostRequest(Dribbble.BUCKETS_END_POINT, formBody), Dribbble.BUCKET_TYPE);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bucket bucket) {
+            if (bucket != null) {
+                adapter.prepend(Collections.singletonList(bucket));
+            } else {
+                Snackbar.make(getView(), "Error!", Snackbar.LENGTH_LONG).show();
+            }
+        }
     }
 }

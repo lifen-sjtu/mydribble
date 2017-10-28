@@ -14,4 +14,9 @@
 
     <string name="auth_activity_title">Log into Dribbble</string>
     <string name="share_shot">Share this amazing shot!</string>
+    <string name="bucketDiaglog_ok">OK</string>
+    <string name="bucketDiaglog_cancel">Cancel</string>
+    <string name="new_bucket_title">New Bucket</string>
+    <string name="new_bucket_create">Create</string>
+    <string name="new_bucket_cancel">Cancel</string>
 </resources>

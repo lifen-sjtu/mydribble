@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.jlwang.mydribble.dribbble.auth.Auth;
+import com.example.jlwang.mydribble.model.Bucket;
 import com.example.jlwang.mydribble.model.User;
 import com.example.jlwang.mydribble.utils.ModelUtils;
 import com.google.gson.JsonSyntaxException;
@@ -17,6 +17,7 @@ import java.io.IOException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -24,15 +25,21 @@ import okhttp3.Response;
  */
 
 public class Dribbble  extends Application{
+
     public static final String API_URL = "https://api.dribbble.com/v1/";
-    public static final String GET_USER_URL = API_URL + "user";
-    public static final String GET_SHOT_LIST_URL = API_URL + "shots";
+    public static final String USER_END_POINT = API_URL + "user";
+    public static final String SHOT_END_POINT = API_URL + "shots";
+    public static final String BUCKETS_END_POINT = API_URL + "buckets";
 
     public static final String AUTH_HEADER = "Authorization";
     public static final String PREF_AUTH = "auth";
 
     private static final TypeToken<User> USER_TYPE = new TypeToken<User>(){};
-    private static final String KEY_USER = "use";
+    public static final TypeToken<Bucket> BUCKET_TYPE = new TypeToken<Bucket>(){};
+
+    public static final String KEY_USER = "user";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_DESCRIPTION = "description";
 
     private static OkHttpClient client = new OkHttpClient();
     public static String accessToken;
@@ -58,6 +65,14 @@ public class Dribbble  extends Application{
         return makeRequest(request);
     }
 
+    public static Response makePostRequest(String url,
+                                            RequestBody requestBody) throws IOException {
+        Request request = authRequestBuilder(url)
+                .post(requestBody)
+                .build();
+        return makeRequest(request);
+    }
+
     public static <T> T parseResponse(Response response,
                                        TypeToken<T> typeToken) throws IOException, JsonSyntaxException {
         String responseString = response.body().string();
@@ -80,7 +95,7 @@ public class Dribbble  extends Application{
     }
 
     public static User getUser() throws IOException {
-        return parseResponse(makeGetRequest(GET_USER_URL),USER_TYPE);
+        return parseResponse(makeGetRequest(USER_END_POINT),USER_TYPE);
     }
 
     public static void logout(@NonNull Context context) {

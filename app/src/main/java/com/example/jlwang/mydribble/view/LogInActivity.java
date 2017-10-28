@@ -50,8 +50,10 @@ public class LogInActivity extends AppCompatActivity {
             login_btn.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(LogInActivity.this,AuthActivity.class);
-                    startActivityForResult(intent, REQ_CODE_AUTH);
+//                    Intent intent = new Intent(LogInActivity.this,AuthActivity.class);
+//                    startActivityForResult(intent, REQ_CODE_AUTH);
+                    Auth.openAuthActivity(LogInActivity.this);
+
                 }
             });
         }
