@@ -9,14 +9,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,15 +25,12 @@ import com.example.jlwang.mydribble.R;
 import com.example.jlwang.mydribble.dribbble.Dribbble;
 import com.example.jlwang.mydribble.view.base.SpaceItemDecoration;
 import com.example.jlwang.mydribble.model.Bucket;
-import com.example.jlwang.mydribble.view.shot_list.ShotListFragment;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Downloader;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -45,15 +43,32 @@ import okhttp3.Response;
 public class BucketListFragment extends Fragment{
     private static final int COUNT_PER_PAGE = 12;
     public static final int REQ_CODE_NEW_BUCKET = 101;
+    public static final String KEY_CHOOSING_MODE = "choose_mode";
+    public static final String KEY_CHOSEN_BUCKET_IDS = "chosen_bucket_ids";
     private RecyclerView recyclerView;
     private BucketListAdapter adapter;
     private OkHttpClient client = new OkHttpClient();
-    private static boolean isChoosing;
+    private boolean isChoosingMode;
+    private ArrayList<String> chosenBucketIds;
 
-    public static BucketListFragment newInstance(boolean chooseMode) {
-        isChoosing = chooseMode;
-        return new BucketListFragment();
+    public static BucketListFragment newInstance(boolean chooseMode, ArrayList<String> collectedBucketIds) {
+        BucketListFragment bucketListFragment = new BucketListFragment();
+
+        Bundle args = new Bundle();
+        args.putStringArrayList(KEY_CHOSEN_BUCKET_IDS,collectedBucketIds);
+        args.putBoolean(KEY_CHOOSING_MODE,chooseMode);
+        bucketListFragment.setArguments(args);
+        return bucketListFragment;
     }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
 
     @Nullable
     @Override
@@ -65,6 +80,13 @@ public class BucketListFragment extends Fragment{
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        isChoosingMode = getArguments().getBoolean(KEY_CHOOSING_MODE);
+        if(isChoosingMode) {
+            chosenBucketIds = getArguments().getStringArrayList(KEY_CHOSEN_BUCKET_IDS);
+            if(chosenBucketIds == null) {
+                chosenBucketIds = new ArrayList<>();
+            }
+        };
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.addItemDecoration(new SpaceItemDecoration(
                 getResources().getDimensionPixelSize(R.dimen.spacing_medium)));
@@ -73,7 +95,7 @@ public class BucketListFragment extends Fragment{
             public void onLoadMore() {
                 AsyncTaskCompat.executeParallel(new LoadBucketList(Dribbble.USER_END_POINT,adapter.getDataCount() / COUNT_PER_PAGE + 1));
             }
-        }, isChoosing);
+        }, isChoosingMode);
         recyclerView.setAdapter(adapter);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -120,8 +142,18 @@ public class BucketListFragment extends Fragment{
         @Override
         protected void onPostExecute(List<Bucket> buckets) {
             if(buckets != null) {
+                if(isChoosingMode) {
+                    for(Bucket bucket: buckets) {
+                        if(chosenBucketIds.contains(bucket.id)) {
+                            bucket.isChoosing = true;
+                        }
+                    }
+                }
+
                 adapter.append(buckets);
                 adapter.setShowLoading(buckets.size() == COUNT_PER_PAGE);
+            }else {
+                Snackbar.make(getView(), "Error!", Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -159,4 +191,28 @@ public class BucketListFragment extends Fragment{
             }
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.ic_save) {
+            ArrayList<String> chosenBucketIds = adapter.getSelectedBucketIds();
+
+            Log.i("fen save","save success");
+            Intent result = new Intent();
+            result.putStringArrayListExtra(KEY_CHOSEN_BUCKET_IDS,chosenBucketIds);
+            getActivity().setResult(Activity.RESULT_OK,result);
+            getActivity().finish();
+            return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (isChoosingMode) {
+            inflater.inflate(R.menu.menu_save, menu);
+        }
+    }
+
 }

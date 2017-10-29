@@ -19,6 +19,7 @@ public class Auth {
     private static final String KEY_REDIRECT_URI = "redirect_uri";
     private static final String KEY_SCOPE = "scope";
     public final static String KEY_ACCESS_TOKEN = "access_token";
+    public static final String KEY_SHOT_ID = "shot_id";
 
     public final static String CLIENT_ID_VALUE = "a20d39c0c7d70febd60ac1c560f4ff1a7e6b4b9bdf3b7a8a8844db2aad204be6";
     public final static String CLIENT_SECRET_VALUE = "ce391a56f98ae8e1cad0b80771d70017a98306e5c8acd38d98dd1419797eaa41";

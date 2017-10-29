@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new ShotListFragment();
                         break;
                     case R.id.drawer_item_buckets:
-                        fragment = BucketListFragment.newInstance(false);
+                        fragment = BucketListFragment.newInstance(false,null);
                         break;
                     default:
                         break;

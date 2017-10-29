@@ -1,6 +1,8 @@
 package com.example.jlwang.mydribble.view.buck_list;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +10,9 @@ import android.view.ViewGroup;
 
 import com.example.jlwang.mydribble.R;
 import com.example.jlwang.mydribble.model.Bucket;
-import com.example.jlwang.mydribble.model.Shot;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,12 +25,12 @@ class BucketListAdapter extends RecyclerView.Adapter {
     private List<Bucket> bucketList;
     private boolean showLoading;
     private LoadMoreListner loadMoreListner;
-    private boolean isChoosing;
+    private boolean isChoosingMode;
 
     public BucketListAdapter(@NonNull List<Bucket> bucketList, LoadMoreListner loadMoreListner,boolean isChoosing) {
         this.bucketList = bucketList;
         this.loadMoreListner = loadMoreListner;
-        this.isChoosing = isChoosing;
+        this.isChoosingMode = isChoosing;
         showLoading = true;
     }
 
@@ -47,23 +49,35 @@ class BucketListAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder( RecyclerView.ViewHolder holder, final int position) {
         final int viewType = getItemViewType(position);
         if(viewType == VIEW_TYPR_LOADING) {
             loadMoreListner.onLoadMore();
         } else {
-            Bucket bucket = bucketList.get(position);
-
+            final Bucket bucket = bucketList.get(position);
+            final Context context = holder.itemView.getContext();
             String bucketShotCountString = MessageFormat.format(
                     holder.itemView.getContext().getResources().getString(R.string.shot_count),
                     bucket.shots_count);
 
-            BucketViewHolder bucketViewHolder = (BucketViewHolder) holder;
+            final BucketViewHolder bucketViewHolder = (BucketViewHolder) holder;
             bucketViewHolder.bucket_name.setText(bucket.name);
             bucketViewHolder.bucket_shot_count.setText(bucketShotCountString);
 
-            if(isChoosing) {
+            if(isChoosingMode) {
+                bucketViewHolder.bucketChosen.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bucket.isChoosing = !bucket.isChoosing;
+                        notifyItemChanged(position);
+                    }
+                });
                 bucketViewHolder.bucketChosen.setVisibility(View.VISIBLE);
+                bucketViewHolder.bucketChosen.setImageDrawable(
+                        bucket.isChoosing
+                                ? ContextCompat.getDrawable(context, R.drawable.ic_check_box_black_24dp)
+                                : ContextCompat.getDrawable(context, R.drawable.ic_check_box_outline_blank_black_24dp));
+
             } else {
                 bucketViewHolder.bucketChosen.setVisibility(View.GONE);
             }
@@ -108,5 +122,15 @@ class BucketListAdapter extends RecyclerView.Adapter {
 
     public interface LoadMoreListner {
         void onLoadMore();
+    }
+
+    public ArrayList<String> getSelectedBucketIds() {
+        ArrayList<String> selectedBucketIds = new ArrayList<>();
+        for (Bucket bucket : bucketList) {
+            if (bucket.isChoosing) {
+                selectedBucketIds.add(bucket.id);
+            }
+        }
+        return selectedBucketIds;
     }
 }

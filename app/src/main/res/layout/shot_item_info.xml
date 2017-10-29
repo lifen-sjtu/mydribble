@@ -19,6 +19,7 @@
             android:paddingTop="@dimen/shot_action_drawable_top_icon_padding"
             android:paddingBottom="@dimen/shot_action_drawable_top_icon_padding"
             android:drawableTop="@drawable/ic_visibility_black_18dp"
+            android:textColor="@android:color/holo_blue_dark"
             android:drawablePadding="@dimen/shot_action_drawable_top_icon_padding"
             tools:text="1000" />
 

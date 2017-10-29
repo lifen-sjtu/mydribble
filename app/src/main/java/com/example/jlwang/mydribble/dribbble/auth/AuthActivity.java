@@ -56,7 +56,6 @@ public class AuthActivity extends AppCompatActivity {
 
                 if(uri.toString().startsWith(Auth.REDIRECT_URI)) {
                     Intent intent = new Intent();
-                    Log.i("fen",uri.getQueryParameter(Auth.KEY_CODE));
                     intent.putExtra(KEY_AUTH_CODE,uri.getQueryParameter(Auth.KEY_CODE));
                     setResult(Activity.RESULT_OK,intent);
                     finish();

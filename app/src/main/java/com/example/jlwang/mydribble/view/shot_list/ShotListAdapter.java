@@ -71,6 +71,7 @@ public class ShotListAdapter extends RecyclerView.Adapter {
                     .load(shot.getImageUrl())
                     .placeholder(R.drawable.shot_placeholder)
                     .into(shotviewHolder.image);
+
             shotviewHolder.shot_cover.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -73,6 +73,29 @@ public class Dribbble  extends Application{
         return makeRequest(request);
     }
 
+    public static Response makePutRequest(String url,
+                                           RequestBody requestBody) throws IOException {
+        Request request = authRequestBuilder(url)
+                .put(requestBody)
+                .build();
+        return makeRequest(request);
+    }
+
+    public static Response makeDeleteRequest(String url,
+                                           RequestBody requestBody) throws IOException {
+        Request request = authRequestBuilder(url)
+                .delete(requestBody)
+                .build();
+        return makeRequest(request);
+    }
+
+    public static void checkStatusCode(Response response,
+                                        int statusCode) throws IOException {
+        if (response.code() != statusCode) {
+            throw new IOException(response.message());
+        }
+    }
+
     public static <T> T parseResponse(Response response,
                                        TypeToken<T> typeToken) throws IOException, JsonSyntaxException {
         String responseString = response.body().string();

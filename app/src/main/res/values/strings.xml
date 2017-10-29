@@ -19,4 +19,5 @@
     <string name="new_bucket_title">New Bucket</string>
     <string name="new_bucket_create">Create</string>
     <string name="new_bucket_cancel">Cancel</string>
+    <string name="action_save">Save</string>
 </resources>

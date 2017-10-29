@@ -79,6 +79,7 @@ public class LogInActivity extends AppCompatActivity {
                         String jsonData = response.body().string();
                         JSONObject Jobject = new JSONObject(jsonData);
                         String token = Jobject.getString(Auth.KEY_ACCESS_TOKEN);
+                        Log.i("fen token",token);
 
                         Dribbble.login(LogInActivity.this,token);
 

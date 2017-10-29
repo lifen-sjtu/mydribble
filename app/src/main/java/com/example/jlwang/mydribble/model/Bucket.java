@@ -1,6 +1,7 @@
 package com.example.jlwang.mydribble.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by jlwang on 10/16/17.
@@ -14,4 +15,23 @@ public class Bucket {
     public Date created_at;
 
     public boolean isChoosing;
+
+    @Override
+    public boolean equals(Object bucket) {
+        if (bucket instanceof Bucket) {
+            return id.equals(((Bucket) bucket).id);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return id + " " + name + "\n";
+    }
 }

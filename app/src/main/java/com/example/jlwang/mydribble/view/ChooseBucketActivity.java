@@ -4,10 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.jlwang.mydribble.R;
+import com.example.jlwang.mydribble.model.Bucket;
 import com.example.jlwang.mydribble.view.buck_list.BucketListFragment;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,10 +36,12 @@ public class ChooseBucketActivity extends AppCompatActivity {
 
         setTitle("Choose Bucket");
 
+        ArrayList<String> collectedIds = getIntent().getStringArrayListExtra(BucketListFragment.KEY_CHOSEN_BUCKET_IDS);
+
         if(savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.shot_fragment_container, BucketListFragment.newInstance(true))
+                    .add(R.id.shot_fragment_container, BucketListFragment.newInstance(true,collectedIds))
                     .commit();
         }
 
@@ -47,5 +54,7 @@ public class ChooseBucketActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+
     }
+
 }
