@@ -23,6 +23,7 @@ import com.example.jlwang.mydribble.R;
 import com.example.jlwang.mydribble.dribbble.Dribbble;
 import com.example.jlwang.mydribble.dribbble.auth.Auth;
 import com.example.jlwang.mydribble.view.buck_list.BucketListFragment;
+import com.example.jlwang.mydribble.view.shot_item.ShotFragment;
 import com.example.jlwang.mydribble.view.shot_list.ShotListFragment;
 
 import java.io.IOException;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, new ShotListFragment())
+                    .add(R.id.fragment_container, ShotListFragment.newInstance(true))
                     .commit();
         }
     }
@@ -119,10 +120,10 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment = new Fragment();
                 switch(item.getItemId()) {
                     case R.id.drawer_item_home:
-                        fragment = new ShotListFragment();
+                        fragment = ShotListFragment.newInstance(true);
                         break;
                     case R.id.drawer_item_like:
-                        fragment = new ShotListFragment();
+                        fragment = ShotListFragment.newInstance(false);
                         break;
                     case R.id.drawer_item_buckets:
                         fragment = BucketListFragment.newInstance(false,null);

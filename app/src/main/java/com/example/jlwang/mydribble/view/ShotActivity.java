@@ -33,7 +33,7 @@ public class ShotActivity  extends AppCompatActivity{
 
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         setTitle(getActivityTitle());
@@ -47,14 +47,14 @@ public class ShotActivity  extends AppCompatActivity{
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (item.getItemId() == android.R.id.home) {
+//            finish();
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     protected Fragment newFragment() {
         return ShotFragment.newInstance(getIntent().getExtras());

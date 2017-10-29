@@ -34,12 +34,14 @@ public class ShotAdapter extends RecyclerView.Adapter{
 
     private ShotFragment shotFragment;
     private final Shot shot;
+    private boolean isLikeStatusChanged;
 
     private ArrayList<String> collectedBucketIds;
     public ShotAdapter(@NonNull ShotFragment shotFragment,@NonNull Shot shot) {
         this.shotFragment = shotFragment;
         this.shot = shot;
         this.collectedBucketIds = null;
+        isLikeStatusChanged = false;
     }
 
 
@@ -62,7 +64,7 @@ public class ShotAdapter extends RecyclerView.Adapter{
 
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         int viewType = getItemViewType(position);
         Context context = holder.itemView.getContext();
         switch (viewType){
@@ -86,6 +88,13 @@ public class ShotAdapter extends RecyclerView.Adapter{
                                 ? ContextCompat.getDrawable(context, R.drawable.ic_inbox_dribbble_18dp)
                                 : ContextCompat.getDrawable(context, R.drawable.ic_inbox_black_18dp));
 
+
+                shotInfoViewHolder.shotLikeBtn.setImageDrawable(
+                        shot.liked
+                                ? ContextCompat.getDrawable(context, R.drawable.ic_favorite_dribbble_18dp)
+                                : ContextCompat.getDrawable(context, R.drawable.ic_favorite_border_black_18dp)
+
+                );
                 shotInfoViewHolder.shotShareBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -97,6 +106,15 @@ public class ShotAdapter extends RecyclerView.Adapter{
                     @Override
                     public void onClick(View v) {
                         bucket(v.getContext());
+                    }
+                });
+
+                shotInfoViewHolder.shotLikeBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        shot.liked = !shot.liked;
+                        isLikeStatusChanged = !isLikeStatusChanged;
+                        notifyItemChanged(position);
                     }
                 });
                 break;
@@ -163,5 +181,14 @@ public class ShotAdapter extends RecyclerView.Adapter{
         shot.bucketed = !collectedBucketIds.isEmpty();
         shot.buckets_count += addedIds.size() - removedIds.size();
         notifyDataSetChanged();
+    }
+
+    public void updateShotLikeStatus (@NonNull boolean isLike) {
+        shot.liked = isLike;
+        notifyDataSetChanged();
+    }
+
+    public boolean getLikeStatusChanged() {
+        return isLikeStatusChanged;
     }
 }
