@@ -243,15 +243,15 @@ public class ShotFragment extends Fragment{
         @Override
         protected Void doInBackground(Void... params) {
             try {
+                FormBody formBody = new FormBody.Builder().build();
                 if(shot.liked) {
-                    Response response = Dribbble.makePostRequest(updateUrl, null);
+                    Response response = Dribbble.makePostRequest(updateUrl, formBody);
                     Dribbble.checkStatusCode(response, HttpURLConnection.HTTP_CREATED);
                 } else {
-                    Response response = Dribbble.makeDeleteRequest(updateUrl, null);
+                    Response response = Dribbble.makeDeleteRequest(updateUrl, formBody);
                     Dribbble.checkStatusCode(response, HttpURLConnection.HTTP_NO_CONTENT);
                 }
                 Response response = Dribbble.makeGetRequest(updateUrl);
-                Log.i("fen response",response.toString());
             } catch (IOException e) {
                 e.printStackTrace();
                 this.e = e;
