@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">myDribble</string>
+    <string name="app_name">eDribbble</string>
     <string name="drawer_menu_home">Home</string>
     <string name="drawer_menu_like">Like</string>
     <string name="drawer_menu_buckets" >Buckets</string>

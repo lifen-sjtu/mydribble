@@ -114,6 +114,7 @@ public class ShotAdapter extends RecyclerView.Adapter{
                     public void onClick(View v) {
                         shot.liked = !shot.liked;
                         isLikeStatusChanged = !isLikeStatusChanged;
+                        shot.likes_count = shot.liked ? shot.likes_count + 1 : shot.likes_count - 1;
                         notifyItemChanged(position);
                     }
                 });
@@ -191,4 +192,5 @@ public class ShotAdapter extends RecyclerView.Adapter{
     public boolean getLikeStatusChanged() {
         return isLikeStatusChanged;
     }
+
 }

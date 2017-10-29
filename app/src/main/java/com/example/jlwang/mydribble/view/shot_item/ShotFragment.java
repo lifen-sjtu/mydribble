@@ -264,6 +264,7 @@ public class ShotFragment extends Fragment{
             if(e != null) {
                 Snackbar.make(getView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
             }
+
         }
     }
 }
