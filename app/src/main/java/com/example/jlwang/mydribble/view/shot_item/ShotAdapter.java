@@ -83,6 +83,10 @@ public class ShotAdapter extends RecyclerView.Adapter{
                 shotInfoViewHolder.shotLikeCount.setText(String.valueOf(shot.likes_count));
                 shotInfoViewHolder.shotViewCount.setText(String.valueOf(shot.views_count));
 
+                if (shot.user.avatar_url != null) {
+                    Glide.with(shotInfoViewHolder.itemView.getContext()).load(shot.user.avatar_url)
+                            .into(shotInfoViewHolder.shotAuthorPic);
+                }
                 shotInfoViewHolder.shotBucketBtn.setImageDrawable(
                         shot.bucketed
                                 ? ContextCompat.getDrawable(context, R.drawable.ic_inbox_dribbble_18dp)
